@@ -1,3 +1,4 @@
+from collections import deque
 
 
 class TreeNode:
@@ -77,23 +78,46 @@ class ParseTree:
                     queue.append(child_node)
                 print(curr_level)
 
+    def extract_tags(self):
+        pass
+
 
 if __name__ == "__main__":
     xml_string = """
-    <a>
-        <b>
-            <e></e>
-            <f>
-                <g></g>
-            </f>
-        </b>
-        <c>
-            <h>
-                <i></i>
-                <j></j>
-            </h>
-        </c>
-        <d></d>
-    </a>
+<?xml version="1.0" encoding="UTF-8"?>
+<legalDocument>
+    <title>Title of Document</title>
+    <description>Description of Legal Matter</description>
+    <author>Author Name</author>
+    <creationDate></creationDate>
+    <content>
+        <section>
+            <sectionTitle>Introduction</sectionTitle>
+            <paragraph>This is the introductory paragraph of the legal document.</paragraph>
+        </section>
+        <section>
+            <sectionTitle>Background</sectionTitle>
+            <paragraph>The background section provides context to the legal matter.</paragraph>
+        </section>
+        <section>
+            <sectionTitle>Legal Analysis</sectionTitle>
+            <subSection>
+                <subSectionTitle>Analysis Part 1</subSectionTitle>
+                <paragraph>Details of the first part of the legal analysis. Creation date is January 22, 2022.</paragraph>
+            </subSection>
+            <subSection>
+                <subSectionTitle>Analysis Part 2</subSectionTitle>
+                <paragraph>Details of the second part of the legal analysis.</paragraph>
+            </subSection>
+        </section>
+        <section>
+            <sectionTitle>Conclusion</sectionTitle>
+            <paragraph>Concluding remarks and final thoughts on the legal matter.</paragraph>
+        </section>
+    </content>
+</legalDocument>
     """
-    build_tree(xml_string)
+
+    parseTreeObj = ParseTree(xml_string)
+    parseTreeObj.build_tree()
+    parseTreeObj.print_tree()

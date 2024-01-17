@@ -59,14 +59,23 @@ class ParseTree:
         else:
             print(f"Error: Mismatched closing tag '{tag}'")
 
-    current_tag = ""
-    for char in xml_string:
-        if char == '<':
-            current_tag = ""
-        elif char == '>':
-            handle_tag(current_tag)
-        else:
-            current_tag += char
+    def _stack_dump(self):
+        return self.stack
+
+    def print_tree(self):
+        queue = deque()
+        queue.append(self.root_node)
+
+        level = 0
+
+        while queue:
+            curr_level = []
+            curr_node = queue.popleft()
+            if len(curr_node.children) > 0:
+                curr_level.extend([node.tag for node in curr_node.children])
+                for child_node in curr_node.children:
+                    queue.append(child_node)
+                print(curr_level)
 
 
 if __name__ == "__main__":

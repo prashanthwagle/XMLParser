@@ -38,19 +38,19 @@ class ParseTree:
             self.root_node = TreeNode(tag)
             self.curr_node = self.root_node
         else:
-            newNode = TreeNode(tag)
-            self.curr_node.children.append(newNode)
-            newNode.parent = self.curr_node
-            self.curr_node = newNode
+            new_node = TreeNode(tag)
+            self.curr_node.children.append(new_node)
+            new_node.parent = self.curr_node
+            self.curr_node = new_node
         self.stack.append(tag)
         print("Opening tag", self._stack_dump())
 
     def _handle_self_closing_tag(self, tag):
         print("Self Closing tag", self._stack_dump())
-        newNode = TreeNode(tag)
-        self.curr_node.children.append(newNode)
-        newNode.parent = self.curr_node
-        self.curr_node = newNode
+        new_node = TreeNode(tag)
+        self.curr_node.children.append(new_node)
+        new_node.parent = self.curr_node
+        self.curr_node = new_node
 
     def _handle_closing_tag(self, tag):
         self.curr_node = self.curr_node.parent

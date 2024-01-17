@@ -1,7 +1,12 @@
-def build_tree(xml_string):
-    stack = []
 
-    def handle_tag(tag):
+
+class TreeNode:
+    def __init__(self, tag):
+        self.tag = tag
+        self.children = []
+        self.parent = None
+
+
         if tag.startswith('/'):
             handle_closing_tag(tag[1:])
         elif len(tag) > 3 and tag[-2] == "/":

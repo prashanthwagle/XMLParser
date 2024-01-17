@@ -14,6 +14,7 @@ class ParseTree:
         self.root_node = None
         self.curr_node = None
         self.xml_string = xml_string
+        self.xml_data = []
 
     def build_tree(self):
         current_tag = ""
@@ -79,45 +80,46 @@ class ParseTree:
                 print(curr_level)
 
     def extract_tags(self):
-        pass
+        def dfs(curr_node):
+            if len(curr_node.children) == 0:
+                xml_tag = f"<{curr_node.tag}></{curr_node.tag}>"
+                self.xml_data.append(xml_tag)
+                return xml_tag
+
+            child_nodes = []
+            for child in curr_node.children:
+                child_nodes.append(dfs(child))
+
+            children = "".join(child_nodes)
+            xml_tag = f"<{curr_node.tag}>{children}</{curr_node.tag}>"
+            self.xml_data.append(xml_tag)
+            return xml_tag
+
+        curr_node = self.root_node
+        dfs(curr_node)
+        print(self.xml_data)
 
 
 if __name__ == "__main__":
     xml_string = """
-<?xml version="1.0" encoding="UTF-8"?>
-<legalDocument>
-    <title>Title of Document</title>
-    <description>Description of Legal Matter</description>
-    <author>Author Name</author>
-    <creationDate></creationDate>
-    <content>
-        <section>
-            <sectionTitle>Introduction</sectionTitle>
-            <paragraph>This is the introductory paragraph of the legal document.</paragraph>
-        </section>
-        <section>
-            <sectionTitle>Background</sectionTitle>
-            <paragraph>The background section provides context to the legal matter.</paragraph>
-        </section>
-        <section>
-            <sectionTitle>Legal Analysis</sectionTitle>
-            <subSection>
-                <subSectionTitle>Analysis Part 1</subSectionTitle>
-                <paragraph>Details of the first part of the legal analysis. Creation date is January 22, 2022.</paragraph>
-            </subSection>
-            <subSection>
-                <subSectionTitle>Analysis Part 2</subSectionTitle>
-                <paragraph>Details of the second part of the legal analysis.</paragraph>
-            </subSection>
-        </section>
-        <section>
-            <sectionTitle>Conclusion</sectionTitle>
-            <paragraph>Concluding remarks and final thoughts on the legal matter.</paragraph>
-        </section>
-    </content>
-</legalDocument>
+    <a>
+        <b>
+            <e></e>
+            <f>
+                <g></g>
+            </f>
+        </b>
+        <c>
+            <h>
+                <i></i>
+                <j></j>
+            </h>
+        </c>
+        <d></d>
+    </a>
     """
 
     parseTreeObj = ParseTree(xml_string)
     parseTreeObj.build_tree()
-    parseTreeObj.print_tree()
+    # parseTreeObj.print_tree()
+    parseTreeObj.extract_tags()

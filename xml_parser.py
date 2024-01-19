@@ -19,11 +19,19 @@ class ParseTree:
         self.xml_data = []
         self.metadata = {"title": None, "description": None,
                          "author": None, "creationDate": None}
+
+    def __standardize_json(self, ip_dict):
+        for key, value in ip_dict.items():
+            if isinstance(value, str) and value == "":
+                ip_dict[key] = None
+        return ip_dict
+
     def __clean_tags(self, tag):
         match = re.search(r"\s+", tag)
         if match:
             tag = tag[:match.start()]
         return tag
+
     # Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
     def build_tree(self):
         current_tag = ""
@@ -133,7 +141,8 @@ class ParseTree:
 
         curr_node = self.root_node
         dfs(curr_node)
-        print(self.xml_data)
+        return self.__standardize_json({"title": self.metadata["title"], "description": self.metadata["description"],
+                                        "author": self.metadata["author"], "xml_data": self.xml_data, "created_at": self.metadata["creationDate"]})
 
 
 if __name__ == "__main__":

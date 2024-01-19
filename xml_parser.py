@@ -39,7 +39,7 @@ class ParseTree:
             tag = tag[:match.start()]
         return tag
 
-    # Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
+    # TODO: Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
     def build_tree(self):
         current_tag = ""
         capturing_metadata = False
@@ -89,7 +89,6 @@ class ParseTree:
             self._handle_opening_tag(self.__clean_tags(tag))
 
     def _handle_opening_tag(self, tag):
-
         if self.root_node == None:
             self.root_node = TreeNode(tag)
             self.curr_node = self.root_node

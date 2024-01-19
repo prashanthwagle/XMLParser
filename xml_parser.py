@@ -160,6 +160,7 @@ class ParseTree:
                                         "author": self.metadata["author"], "xml_data": self.xml_data, "created_at": self.metadata["creationDate"]})
 
 
+# TODO: Handle for  <?xml version="1.0" encoding="UTF-8"?>
 if __name__ == "__main__":
     xml_string = """
     <a>

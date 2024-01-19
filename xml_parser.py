@@ -70,8 +70,7 @@ class ParseTree:
             elif char == '>':
                 # If metadata is yet to be captured (current tag is an opening tag)
                 if current_tag not in self.stack and current_tag in self.metadata:
-                    capturing_metadata = True and self.__is_meta_data(
-                        current_tag)
+                    capturing_metadata = True and self.__is_meta_data()
 
                 # TODO: ErrorCheck: What if metadata is already filled?
                 self._handle_tag(current_tag)

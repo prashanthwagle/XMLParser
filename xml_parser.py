@@ -66,7 +66,14 @@ class ParseTree:
                 else:
                     current_tag += char
 
+    # TODO Abstact all regexes
     def _handle_tag(self, tag):
+        if "section" in tag and "sectionTitle" not in tag:
+            print("Reached Section")
+
+        if tag.startswith('!') and bool(re.search(r'!--(.*?)--', tag, re.DOTALL)):
+            return
+
         if tag.startswith('/'):
             self._handle_closing_tag(self.__clean_tags(tag[1:]))
         elif len(tag) > 3 and tag[-1] == "/":

@@ -7,6 +7,7 @@ class TreeNode:
         self.children = []
         self.parent = None
         self.is_self_closing = False
+        self.contents = ""
 
 
 class ParseTree:
@@ -16,9 +17,12 @@ class ParseTree:
         self.curr_node = None
         self.xml_string = xml_string
         self.xml_data = []
-
+        self.metadata = {"title": None, "description": None,
+                         "author": None, "creationDate": None}
     def build_tree(self):
         current_tag = ""
+        capturing_metadata = False
+        metadata_contents = ""
         for char in self.xml_string:
             if char == '<':
                 current_tag = ""

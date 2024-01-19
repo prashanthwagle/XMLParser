@@ -19,6 +19,11 @@ class ParseTree:
         self.xml_data = []
         self.metadata = {"title": None, "description": None,
                          "author": None, "creationDate": None}
+    def __clean_tags(self, tag):
+        match = re.search(r"\s+", tag)
+        if match:
+            tag = tag[:match.start()]
+        return tag
     # Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
     def build_tree(self):
         current_tag = ""
@@ -55,13 +60,14 @@ class ParseTree:
 
     def _handle_tag(self, tag):
         if tag.startswith('/'):
-            self._handle_closing_tag(tag[1:])
-        elif len(tag) > 3 and tag[-2] == "/":
-            self._handle_self_closing_tag(tag[1:-2])
+            self._handle_closing_tag(self.__clean_tags(tag[1:]))
+        elif len(tag) > 3 and tag[-1] == "/":
+            self._handle_self_closing_tag(self.__clean_tags(tag[:-1]))
         else:
-            self._handle_opening_tag(tag)
+            self._handle_opening_tag(self.__clean_tags(tag))
 
     def _handle_opening_tag(self, tag):
+
         if self.root_node == None:
             self.root_node = TreeNode(tag)
             self.curr_node = self.root_node

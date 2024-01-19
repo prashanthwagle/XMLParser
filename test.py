@@ -4,7 +4,6 @@ from xml_parser import ParseTree
 
 class TestParseTree(unittest.TestCase):
     def test_extract_tags_doc_1(self):
-        return
         """
         Testing a valid barebones XML file
         """
@@ -63,7 +62,6 @@ class TestParseTree(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
     def test_extract_tags_doc_2(self):
-        return
         """
         Testing a valid legal document
         """
@@ -125,7 +123,6 @@ class TestParseTree(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
     def test_extract_tags_doc_3(self):
-        return
         """
         Testing an valid legal document -- signatureBlock, exhibit, and section are self-closing
         """
@@ -184,7 +181,6 @@ class TestParseTree(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
     def test_extract_tags_doc_4(self):
-        return
         """
         Testing an valid legal document -- has a lot of inline tags, is complex and tags have attributes
         """

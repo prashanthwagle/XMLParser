@@ -90,6 +90,7 @@ class ParseTree:
     def _handle_self_closing_tag(self, tag):
         print("Self Closing tag", self._stack_dump())
         new_node = TreeNode(tag)
+        new_node.is_self_closing = True
         self.curr_node.children.append(new_node)
         new_node.parent = self.curr_node
         self.curr_node = new_node

@@ -21,12 +21,18 @@ class ParseTree:
                          "author": None, "creationDate": None}
 
     def __standardize_json(self, ip_dict):
+        """
+        Logic to standardize json
+        """
         for key, value in ip_dict.items():
             if isinstance(value, str) and value == "":
                 ip_dict[key] = None
         return ip_dict
 
     def __clean_tags(self, tag):
+        """
+        Logic to clean tags aka remove whitespaces and attributes of tags (maybe attributes can be a part of treenodes in the future)
+        """
         match = re.search(r"\s+", tag)
         if match:
             tag = tag[:match.start()]

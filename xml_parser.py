@@ -110,6 +110,10 @@ class ParseTree:
         self.curr_node = new_node
 
     def _handle_closing_tag(self, tag):
+        # if len(metadata_contents) > 0 and tag in self.metadata:
+        #     # ErrorCheck if this field has already been filled (duplicate metadata)
+        #     self.metadata[tag] = metadata_contents
+
         self.curr_node = self.curr_node.parent
         if self.stack and self.stack[-1] == tag:
             print("Closing tag", self._stack_dump())
@@ -163,24 +167,52 @@ class ParseTree:
 # TODO: Handle for  <?xml version="1.0" encoding="UTF-8"?>
 if __name__ == "__main__":
     xml_string = """
-    <a>
-        <b>
-            <e></e>
-            <f>
-                <g></g>
-            </f>
-        </b>
-        <c>
-            <h>
-                <i></i>
-                <j></j>
-            </h>
-        </c>
-        <d></d>
-    </a>
-    """
+            <legalDocument>
+                <header>
+                    <title></title> <!-- Empty title -->
+                    <meta>
+                        <author>Author: Jane Doe</author>
+                        <creationDate></creationDate> <!-- Missing creation date -->
+                    </meta>
+                </header>
+                <body>
+                    <section>
+                        <title>Background</title>
+                        <!-- Missing content section -->
+                        <undefinedTag>Some undefined content</undefinedTag>
+                    </section>
+                    <ambiguous>
+                        <content>Initial <b>content</b> with <i>tags</i></content>
+                        <content> <!-- Nested content tags with missing information -->
+                            <subContent></subContent> <!-- Empty subcontent -->
+                            More text here
+                            <subContent>
+                                <p>Paragraph inside subcontent</p>
+                            </subContent>
+                        </content>
+                        <undefinedStructure>
+                            Irregular formatting and structure
+                            <randomTag>Random information</randomTag>
+                        </undefinedStructure>
+                    </ambiguous>
+                    <conclusion>
+                        <summary>
+                            <point>This is a summary point</point>
+                            <!-- Missing summary point -->
+                        </summary>
+                        <finalThoughts></finalThoughts> <!-- Empty final thoughts -->
+                    </conclusion>
+                </body>
+                <attachments>
+                    <file>attachment1.pdf</file>
+                    <!-- Missing file tag -->
+                    <file>attachment3.docx</file>
+                </attachments>
+                <!-- Missing footer -->
+            </legalDocument>
+                """
 
     parseTreeObj = ParseTree(xml_string)
     parseTreeObj.build_tree()
     # parseTreeObj.print_tree()
-    parseTreeObj.extract_tags()
+    print(parseTreeObj.extract_tags())

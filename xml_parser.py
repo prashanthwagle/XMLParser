@@ -16,7 +16,7 @@ class ParseTree:
         self.stack = []
         self.root_node = None
         self.curr_node = None
-        self.xml_string = xml_string
+        self.xml_string = self.__remove_xml_declaration(xml_string)
         self.xml_data = []
         self.metadata = {"title": None, "description": None,
                          "author": None, "creationDate": None}
@@ -39,14 +39,15 @@ class ParseTree:
             tag = tag[:match.start()]
         return tag
 
-    def __is_meta_data(self, tag):
+    def __is_meta_data(self):
         """
         My logic of checking if a tag is a metadata tag or not
         Either it should be a direct child of legalDocument or it should be nested in the header tag
         """
         return True if 'header' in self.stack or len(self.stack) == 1 else False
 
-    # TODO: Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
+    def __remove_xml_declaration(self, xml_string):
+        return re.sub(r'<?xml .+ ?>', '', xml_string)
 
     def build_tree(self):
         current_tag = ""

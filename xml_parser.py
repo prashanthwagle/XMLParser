@@ -6,6 +6,7 @@ class TreeNode:
         self.tag = tag
         self.children = []
         self.parent = None
+        self.is_self_closing = False
 
 
 class ParseTree:
@@ -82,7 +83,10 @@ class ParseTree:
     def extract_tags(self):
         def dfs(curr_node):
             if len(curr_node.children) == 0:
-                xml_tag = f"<{curr_node.tag}></{curr_node.tag}>"
+                if curr_node.is_self_closing:
+                    xml_tag = f"<{curr_node.tag}/>"
+                else:
+                    xml_tag = f"<{curr_node.tag}></{curr_node.tag}>"
                 self.xml_data.append(xml_tag)
                 return xml_tag
 

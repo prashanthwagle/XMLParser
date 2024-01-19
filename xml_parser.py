@@ -19,17 +19,39 @@ class ParseTree:
         self.xml_data = []
         self.metadata = {"title": None, "description": None,
                          "author": None, "creationDate": None}
+    # Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
     def build_tree(self):
         current_tag = ""
         capturing_metadata = False
         metadata_contents = ""
         for char in self.xml_string:
             if char == '<':
+                if capturing_metadata:
+                    capturing_metadata = False
+                    # ErrorCheck if this field has already been filled (duplicate metadata)
+                    self.metadata[current_tag] = metadata_contents
+                    metadata_contents = ""
                 current_tag = ""
+                # ErrorCheck: What if metadata is already filled?
+
+                # If metadata has already been captured, and you encounter a closing tag
+
             elif char == '>':
+                # If metadata is yet to be captured (current tag is an opening tag)
+                if current_tag not in self.stack and current_tag in self.metadata:
+                    capturing_metadata = True
+
+                # ErrorCheck: What if metadata is already filled?
+                # if current_tag in self.metadata:
+                #     # capturing_metadata = not capturing_metadata
+                #     self._handle_tag(current_tag)
+                #     metadata_contents = ""
                 self._handle_tag(current_tag)
             else:
-                current_tag += char
+                if capturing_metadata == True:
+                    metadata_contents += char
+                else:
+                    current_tag += char
 
     def _handle_tag(self, tag):
         if tag.startswith('/'):

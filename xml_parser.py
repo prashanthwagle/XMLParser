@@ -39,33 +39,40 @@ class ParseTree:
             tag = tag[:match.start()]
         return tag
 
+    def __is_meta_data(self, tag):
+        """
+        My logic of checking if a tag is a metadata tag or not
+        Either it should be a direct child of legalDocument or it should be nested in the header tag
+        """
+        return True if 'header' in self.stack or len(self.stack) == 1 else False
+
     # TODO: Metadata should only be captured if it is present in the <header> tag i.e., header should be present in the stack
+
     def build_tree(self):
         current_tag = ""
         capturing_metadata = False
         metadata_contents = ""
+
         for char in self.xml_string:
             if char == '<':
                 if capturing_metadata:
+                    # If the metadata tags is nested in the header tag, only then consider it as metadata
                     capturing_metadata = False
-                    # ErrorCheck if this field has already been filled (duplicate metadata)
+                    # TODO: ErrorCheck if this field has already been filled (duplicate metadata)
                     self.metadata[current_tag] = metadata_contents
                     metadata_contents = ""
                 current_tag = ""
-                # ErrorCheck: What if metadata is already filled?
+                # TODO: ErrorCheck: What if metadata is already filled?
 
                 # If metadata has already been captured, and you encounter a closing tag
 
             elif char == '>':
                 # If metadata is yet to be captured (current tag is an opening tag)
                 if current_tag not in self.stack and current_tag in self.metadata:
-                    capturing_metadata = True
+                    capturing_metadata = True and self.__is_meta_data(
+                        current_tag)
 
-                # ErrorCheck: What if metadata is already filled?
-                # if current_tag in self.metadata:
-                #     # capturing_metadata = not capturing_metadata
-                #     self._handle_tag(current_tag)
-                #     metadata_contents = ""
+                # TODO: ErrorCheck: What if metadata is already filled?
                 self._handle_tag(current_tag)
             else:
                 if capturing_metadata == True:
@@ -75,9 +82,6 @@ class ParseTree:
 
     # TODO Abstact all regexes
     def _handle_tag(self, tag):
-        if "section" in tag and "sectionTitle" not in tag:
-            print("Reached Section")
-
         if tag.startswith('!') and bool(re.search(r'!--(.*?)--', tag, re.DOTALL)):
             return
 
@@ -109,10 +113,7 @@ class ParseTree:
         self.curr_node = new_node
 
     def _handle_closing_tag(self, tag):
-        # if len(metadata_contents) > 0 and tag in self.metadata:
-        #     # ErrorCheck if this field has already been filled (duplicate metadata)
-        #     self.metadata[tag] = metadata_contents
-
+        # TODO: ErrorCheck if this field has already been filled (duplicate metadata)
         self.curr_node = self.curr_node.parent
         if self.stack and self.stack[-1] == tag:
             print("Closing tag", self._stack_dump())
@@ -166,50 +167,61 @@ class ParseTree:
 # TODO: Handle for  <?xml version="1.0" encoding="UTF-8"?>
 if __name__ == "__main__":
     xml_string = """
-            <legalDocument>
-                <header>
-                    <title></title> <!-- Empty title -->
-                    <meta>
-                        <author>Author: Jane Doe</author>
-                        <creationDate></creationDate> <!-- Missing creation date -->
-                    </meta>
-                </header>
-                <body>
-                    <section>
-                        <title>Background</title>
-                        <!-- Missing content section -->
-                        <undefinedTag>Some undefined content</undefinedTag>
-                    </section>
-                    <ambiguous>
-                        <content>Initial <b>content</b> with <i>tags</i></content>
-                        <content> <!-- Nested content tags with missing information -->
-                            <subContent></subContent> <!-- Empty subcontent -->
-                            More text here
-                            <subContent>
-                                <p>Paragraph inside subcontent</p>
-                            </subContent>
-                        </content>
-                        <undefinedStructure>
-                            Irregular formatting and structure
-                            <randomTag>Random information</randomTag>
-                        </undefinedStructure>
-                    </ambiguous>
-                    <conclusion>
-                        <summary>
-                            <point>This is a summary point</point>
-                            <!-- Missing summary point -->
-                        </summary>
-                        <finalThoughts></finalThoughts> <!-- Empty final thoughts -->
-                    </conclusion>
-                </body>
-                <attachments>
-                    <file>attachment1.pdf</file>
-                    <!-- Missing file tag -->
-                    <file>attachment3.docx</file>
-                </attachments>
-                <!-- Missing footer -->
-            </legalDocument>
-                """
+        <legalDocument>
+            <header>
+                <title>Complex Legal Document</title>
+                <meta>
+                    <author>John Smith</author>
+                    <co-author>Emily Johnson</co-author>
+                    <creationDate>2024-04-01</creationDate>
+                </meta>
+            </header>
+            <body>
+                <section id="1">
+                    <title>Introduction</title>
+                    <content>Overview of the document's purpose.</content>
+                    <note>Some notes <highlight>with <b>mixed</b> formatting</highlight> inside.</note>
+                </section>
+                <section id="2">
+                    <title>Background</title>
+                    <content>
+                        <paragraph>Background information with <inlineTag>various</inlineTag> inline elements.</paragraph>
+                        <list>
+                            <item>Point 1</item>
+                            <item>Point 2 with <b>bold</b> text</item>
+                        </list>
+                    </content>
+                </section>
+                <content>
+                    <mixedContent>
+                        This is <b>mixed</b> content outside a <normalTag>regular tag structure</normalTag>.
+                        <moreContent>
+                            More nested content with <a href="http://example.com">links</a> and other elements.
+                        </moreContent>
+                    </mixedContent>
+                </content>
+                <section id="3">
+                    <title>Conclusion</title>
+                    <content>
+                        <conclusion>
+                            Final thoughts and <unusualTag>remarks</unusualTag>.
+                        </conclusion>
+                    </content>
+                    <attachments>
+                        <file>attachment1.pdf</file>
+                        <file>attachment2.jpg</file>
+                        <file>attachment3.docx</file>
+                    </attachments>
+                </section>
+            </body>
+            <footer>
+                <comments>
+                    <comment>First comment</comment>
+                    <comment>Second comment with <b>bold</b> text</comment>
+                </comments>
+            </footer>
+        </legalDocument>
+            """
 
     parseTreeObj = ParseTree(xml_string)
     parseTreeObj.build_tree()

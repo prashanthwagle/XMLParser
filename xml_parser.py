@@ -12,6 +12,11 @@ MSG_ERR_INVALID_XML = "ERROR: Invalid XML format"
 MSG_ERR_MATCH_TAGS = "ERROR: Invalid XML format: No closing tag found/misplaced closing tag for {}"
 
 
+# REGEXPS
+REGEX_RMV_WS = r"\s+"
+REGEX_XML_DEC = r'<?xml .+ ?>'
+REGEX_XML_COMMS = r'!--(.*?)--'
+REGEX_VLD_XML_TG = re.compile('^[a-zA-Z_][:a-zA-Z0-9\.\-_]*$')
 
 
 class TreeNode:
@@ -49,7 +54,7 @@ class ParseTree:
         """
         Logic to clean tags aka remove whitespaces and attributes of tags (maybe attributes can be a part of treenodes in the future)
         """
-        match = re.search(r"\s+", tag)
+        match = re.search(REGEX_RMV_WS, tag)
         if match:
             tag = tag[:match.start()]
         return tag
@@ -81,6 +86,8 @@ class ParseTree:
         self.return_message += message
 
     def build_tree(self):
+        # For now I am just printing the errors and warning to the console
+        # In the future, they could be sent in the json request with appropriate HTTP codes
         current_tag = ""
         capturing_metadata = False
         metadata_contents = ""
@@ -96,13 +103,11 @@ class ParseTree:
                         self.metadata[current_tag] = metadata_contents
                     metadata_contents = ""
                 current_tag = ""
-                # TODO: ErrorCheck: What if metadata is already filled?
-
-                # If metadata has already been captured, and you encounter a closing tag
-
+            # If metadata has already been captured, and you encounter a closing tag
             elif char == '>':
                 # If metadata is yet to be captured (current tag is an opening tag)
                 if current_tag not in self.stack and current_tag in self.metadata:
+                    # If the metadata tags is nested in the header tag, only then consider it as metadata
                     capturing_metadata = True and self.__is_meta_data()
 
                 # TODO: ErrorCheck: What if metadata is already filled?
@@ -113,7 +118,7 @@ class ParseTree:
                 else:
                     current_tag += char
 
-    # TODO Abstact all regexes
+    # TODO: Need to use try except blocks here
     def _handle_tag(self, tag):
         if self.is_error or self.is_warning == True:
             print(self.return_message)
@@ -184,8 +189,6 @@ class ParseTree:
         queue = deque()
         queue.append(self.root_node)
 
-        level = 0
-
         while queue:
             curr_level = []
             curr_node = queue.popleft()
@@ -216,6 +219,7 @@ class ParseTree:
 
         curr_node = self.root_node
         dfs(curr_node)
+
         return self.__standardize_json({"title": self.metadata["title"], "description": self.metadata["description"],
                                         "author": self.metadata["author"], "xml_data": self.xml_data, "created_at": self.metadata["creationDate"]})
 
@@ -223,7 +227,7 @@ class ParseTree:
 # TODO: Handle for  <?xml version="1.0" encoding="UTF-8"?>
 if __name__ == "__main__":
     xml_string = """
-        <legalDocument>
+        <1legalDocument>
             <header>
                 <title>Complex Legal Document</title>
                 <meta>
@@ -241,7 +245,7 @@ if __name__ == "__main__":
                 <section id="2">
                     <title>Background</title>
                     <content>
-                        <paragraph>Background information with <inlineTag>various</inlineTag> inline elements.</paragraph>
+                        <paragraph>Background information with <inlineTag>various inline elements.</paragraph>
                         <list>
                             <item>Point 1</item>
                             <item>Point 2 with <b>bold</b> text</item>
@@ -282,4 +286,4 @@ if __name__ == "__main__":
     parseTreeObj = ParseTree(xml_string)
     parseTreeObj.build_tree()
     # parseTreeObj.print_tree()
-    print(parseTreeObj.extract_tags())
+    parseTreeObj.extract_tags()

@@ -120,15 +120,14 @@ class ParseTree:
 
     # TODO: Need to use try except blocks here
     def _handle_tag(self, tag):
-        if self.is_error or self.is_warning == True:
+        if self.is_error or self.is_warning:
             print(self.return_message)
+            # If an error is found in the XML, abort operation
+            if self.is_error == True:
+                exit()
             self.return_message = ""
             self.is_warning = False
             self.is_error = False
-
-        # If an error is found in the XML, abort operation
-        if self.is_error == True:
-            return
 
         # Discard all comments
         if tag.startswith('!') and bool(re.search(REGEX_XML_COMMS, tag, re.DOTALL)):
@@ -245,7 +244,7 @@ if __name__ == "__main__":
                 <section id="2">
                     <title>Background</title>
                     <content>
-                        <paragraph>Background information with <inlineTag>various inline elements.</paragraph>
+                        <paragraph>Background information with various inline elements.</paragraph>
                         <list>
                             <item>Point 1</item>
                             <item>Point 2 with <b>bold</b> text</item>

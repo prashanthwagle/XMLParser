@@ -1,6 +1,18 @@
 from collections import deque
 import re
 
+# Warning Messages
+MSG_WARN_DUP_METADATA = "WARNING: Duplicate Metadata for {} found"
+MSG_WARN_REMOVED_COMMS = "WARNING: Removed comments from the document"
+MSG_WARN_NO_DEC = "WARNING: XML Declaration not found"
+MSG_WARN_INVLD_TAG = "WARNING: Name of the tag {} is invalid"
+
+# Error Messages (Invalid XML format)
+MSG_ERR_INVALID_XML = "ERROR: Invalid XML format"
+MSG_ERR_MATCH_TAGS = "ERROR: Invalid XML format: No closing tag found/misplaced closing tag for {}"
+
+
+
 
 class TreeNode:
     def __init__(self, tag):

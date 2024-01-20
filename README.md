@@ -19,8 +19,8 @@
 # How to run the server
 
 Make sure you have python3 installed
-Run `python3 app.py` on UNIX-based systems OR
-Run `python app.py` on Windows
+Run `python3 run_server.py` on UNIX-based systems OR
+Run `python run_server.py` on Windows
 
 # Error Logging
 

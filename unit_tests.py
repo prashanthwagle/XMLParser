@@ -8,6 +8,7 @@ class TestParseTree(unittest.TestCase):
         Testing a valid barebones XML file
         """
         xml_string = """
+        <?xml version="1.0" encoding="UTF-8"?>
         <legalDocument>
             <title>Title of Document</title>
             <description>Description of Legal Matter</description>
@@ -51,7 +52,6 @@ class TestParseTree(unittest.TestCase):
             'xml_data': ['<title></title>', '<description></description>', '<author></author>', '<creationDate></creationDate>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<sectionTitle></sectionTitle>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection>', '<section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<content><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section></content>', '<legalDocument><title></title><description></description><author></author><creationDate></creationDate><content><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section></content></legalDocument>'],
             'created_at': None
         }
-        print(expected_output['xml_data'])
 
         self.assertListEqual(
             output['xml_data'], expected_output['xml_data'], "Lists are not equal")
@@ -66,6 +66,7 @@ class TestParseTree(unittest.TestCase):
         Testing a valid legal document
         """
         xml_string = """
+        <?xml version="1.0" encoding="UTF-8"?>
             <legalDocument>
                 <description>Detailed Analysis of Contractual Obligations</description>
                 <author>Jane Doe</author>
@@ -112,7 +113,6 @@ class TestParseTree(unittest.TestCase):
             'xml_data': ['<description></description>', '<author></author>', '<creationDate></creationDate>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<sectionTitle></sectionTitle>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection>', '<section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<section><sectionTitle></sectionTitle><paragraph></paragraph></section>', '<content><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section></content>', '<legalDocument><description></description><author></author><creationDate></creationDate><content><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section><section><sectionTitle></sectionTitle><paragraph></paragraph></section></content></legalDocument>'],
             'created_at': '2024-02-15'
         }
-        print(expected_output['xml_data'])
 
         self.assertListEqual(
             output['xml_data'], expected_output['xml_data'], "Lists are not equal")
@@ -127,6 +127,7 @@ class TestParseTree(unittest.TestCase):
         Testing an valid legal document -- signatureBlock, exhibit, and section are self-closing
         """
         xml_string = """
+        <?xml version="1.0" encoding="UTF-8"?>
          <legalDocument>
             <title>Settlement Agreement</title>
             <description>Outline of Settlement Terms</description>
@@ -170,7 +171,6 @@ class TestParseTree(unittest.TestCase):
             'xml_data': ['<title></title>', '<description></description>', '<author></author>', '<creationDate></creationDate>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<exhibit/>', '<sectionTitle></sectionTitle>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection>', '<subSectionTitle></subSectionTitle>', '<paragraph></paragraph>', '<attachment/>', '<subSection><subSectionTitle></subSectionTitle><paragraph></paragraph><attachment/></subSection>', '<sectionTitle></sectionTitle>', '<paragraph></paragraph>', '<signatureBlock/>', '<section/>', '<section><sectionTitle></sectionTitle><paragraph></paragraph><signatureBlock/><section/></section>', '<section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph><attachment/></subSection><section><sectionTitle></sectionTitle><paragraph></paragraph><signatureBlock/><section/></section></section>', '<section><sectionTitle></sectionTitle><paragraph></paragraph><exhibit/><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph><attachment/></subSection><section><sectionTitle></sectionTitle><paragraph></paragraph><signatureBlock/><section/></section></section></section>', '<content><section><sectionTitle></sectionTitle><paragraph></paragraph><exhibit/><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph><attachment/></subSection><section><sectionTitle></sectionTitle><paragraph></paragraph><signatureBlock/><section/></section></section></section></content>', '<legalDocument><title></title><description></description><author></author><creationDate></creationDate><content><section><sectionTitle></sectionTitle><paragraph></paragraph><exhibit/><section><sectionTitle></sectionTitle><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph></subSection><subSection><subSectionTitle></subSectionTitle><paragraph></paragraph><attachment/></subSection><section><sectionTitle></sectionTitle><paragraph></paragraph><signatureBlock/><section/></section></section></section></content></legalDocument>'],
             'created_at': None
         }
-        print(expected_output['xml_data'])
 
         self.assertListEqual(
             output['xml_data'], expected_output['xml_data'], "Lists are not equal")
@@ -183,6 +183,7 @@ class TestParseTree(unittest.TestCase):
     def test_extract_tags_doc_4(self):
         """
         Testing an valid legal document -- has a lot of inline tags, is complex and tags have attributes
+        Warning will be logged as XML declaration is missing
         """
         xml_string = """
         <legalDocument>
@@ -251,7 +252,6 @@ class TestParseTree(unittest.TestCase):
             'xml_data': ['<title></title>', '<author></author>', '<co-author></co-author>', '<creationDate></creationDate>', '<meta><author></author><co-author></co-author><creationDate></creationDate></meta>', '<header><title></title><meta><author></author><co-author></co-author><creationDate></creationDate></meta></header>', '<title></title>', '<content></content>', '<b></b>', '<highlight><b></b></highlight>', '<note><highlight><b></b></highlight></note>', '<section><title></title><content></content><note><highlight><b></b></highlight></note></section>', '<title></title>', '<inlineTag></inlineTag>', '<paragraph><inlineTag></inlineTag></paragraph>', '<item></item>', '<b></b>', '<item><b></b></item>', '<list><item></item><item><b></b></item></list>', '<content><paragraph><inlineTag></inlineTag></paragraph><list><item></item><item><b></b></item></list></content>', '<section><title></title><content><paragraph><inlineTag></inlineTag></paragraph><list><item></item><item><b></b></item></list></content></section>', '<b></b>', '<normalTag></normalTag>', '<a></a>', '<moreContent><a></a></moreContent>', '<mixedContent><b></b><normalTag></normalTag><moreContent><a></a></moreContent></mixedContent>', '<content><mixedContent><b></b><normalTag></normalTag><moreContent><a></a></moreContent></mixedContent></content>', '<title></title>', '<unusualTag></unusualTag>', '<conclusion><unusualTag></unusualTag></conclusion>', '<content><conclusion><unusualTag></unusualTag></conclusion></content>', '<file></file>', '<file></file>', '<file></file>', '<attachments><file></file><file></file><file></file></attachments>', '<section><title></title><content><conclusion><unusualTag></unusualTag></conclusion></content><attachments><file></file><file></file><file></file></attachments></section>', '<body><section><title></title><content></content><note><highlight><b></b></highlight></note></section><section><title></title><content><paragraph><inlineTag></inlineTag></paragraph><list><item></item><item><b></b></item></list></content></section><content><mixedContent><b></b><normalTag></normalTag><moreContent><a></a></moreContent></mixedContent></content><section><title></title><content><conclusion><unusualTag></unusualTag></conclusion></content><attachments><file></file><file></file><file></file></attachments></section></body>', '<comment></comment>', '<b></b>', '<comment><b></b></comment>', '<comments><comment></comment><comment><b></b></comment></comments>', '<footer><comments><comment></comment><comment><b></b></comment></comments></footer>', '<legalDocument><header><title></title><meta><author></author><co-author></co-author><creationDate></creationDate></meta></header><body><section><title></title><content></content><note><highlight><b></b></highlight></note></section><section><title></title><content><paragraph><inlineTag></inlineTag></paragraph><list><item></item><item><b></b></item></list></content></section><content><mixedContent><b></b><normalTag></normalTag><moreContent><a></a></moreContent></mixedContent></content><section><title></title><content><conclusion><unusualTag></unusualTag></conclusion></content><attachments><file></file><file></file><file></file></attachments></section></body><footer><comments><comment></comment><comment><b></b></comment></comments></footer></legalDocument>'],
             'created_at': "2024-04-01"
         }
-        print(expected_output['xml_data'])
 
         self.assertListEqual(
             output['xml_data'], expected_output['xml_data'], "Lists are not equal")
@@ -266,6 +266,7 @@ class TestParseTree(unittest.TestCase):
         Testing an valid legal document -- it has comments
         """
         xml_string = """
+        <?xml version="1.0" encoding="UTF-8"?>
             <legalDocument>
                 <header>
                     <title></title> <!-- Empty title -->
@@ -321,7 +322,6 @@ class TestParseTree(unittest.TestCase):
             'xml_data': ['<title></title>', '<author></author>', '<creationDate></creationDate>', '<meta><author></author><creationDate></creationDate></meta>', '<header><title></title><meta><author></author><creationDate></creationDate></meta></header>', '<title></title>', '<undefinedTag></undefinedTag>', '<section><title></title><undefinedTag></undefinedTag></section>', '<b></b>', '<i></i>', '<content><b></b><i></i></content>', '<subContent></subContent>', '<p></p>', '<subContent><p></p></subContent>', '<content><subContent></subContent><subContent><p></p></subContent></content>', '<randomTag></randomTag>', '<undefinedStructure><randomTag></randomTag></undefinedStructure>', '<ambiguous><content><b></b><i></i></content><content><subContent></subContent><subContent><p></p></subContent></content><undefinedStructure><randomTag></randomTag></undefinedStructure></ambiguous>', '<point></point>', '<summary><point></point></summary>', '<finalThoughts></finalThoughts>', '<conclusion><summary><point></point></summary><finalThoughts></finalThoughts></conclusion>', '<body><section><title></title><undefinedTag></undefinedTag></section><ambiguous><content><b></b><i></i></content><content><subContent></subContent><subContent><p></p></subContent></content><undefinedStructure><randomTag></randomTag></undefinedStructure></ambiguous><conclusion><summary><point></point></summary><finalThoughts></finalThoughts></conclusion></body>', '<file></file>', '<file></file>', '<attachments><file></file><file></file></attachments>', '<legalDocument><header><title></title><meta><author></author><creationDate></creationDate></meta></header><body><section><title></title><undefinedTag></undefinedTag></section><ambiguous><content><b></b><i></i></content><content><subContent></subContent><subContent><p></p></subContent></content><undefinedStructure><randomTag></randomTag></undefinedStructure></ambiguous><conclusion><summary><point></point></summary><finalThoughts></finalThoughts></conclusion></body><attachments><file></file><file></file></attachments></legalDocument>'],
             'created_at': None
         }
-        print(expected_output['xml_data'])
 
         self.assertListEqual(
             output['xml_data'], expected_output['xml_data'], "Lists are not equal")

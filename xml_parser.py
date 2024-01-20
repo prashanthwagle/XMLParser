@@ -115,7 +115,14 @@ class ParseTree:
 
     # TODO Abstact all regexes
     def _handle_tag(self, tag):
-        if tag.startswith('!') and bool(re.search(r'!--(.*?)--', tag, re.DOTALL)):
+        if self.is_error or self.is_warning == True:
+            print(self.return_message)
+            self.return_message = ""
+            self.is_warning = False
+            self.is_error = False
+
+        # If an error is found in the XML, abort operation
+        if self.is_error == True:
             return
 
         # Discard all comments

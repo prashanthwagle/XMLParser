@@ -19,7 +19,7 @@
 # How to run the server
 
 Make sure you have python3 installed
-Run `python3 app.py` on UNIX-based systems
+Run `python3 app.py` on UNIX-based systems OR
 Run `python app.py` on Windows
 
 # Error Logging

@@ -34,6 +34,7 @@ class ParseTree:
         self.is_error = False
         self.is_warning = False
         self.return_message = ""
+        self.xml_string = self.__remove_xml_declaration(xml_string)
 
     def __standardize_json(self, ip_dict):
         """

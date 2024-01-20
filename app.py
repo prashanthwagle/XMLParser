@@ -15,10 +15,8 @@ def get_data():
 
     filename = f"doc_{id}_xml.xml"
 
-    print(filename)
-
     filepath = os.path.join(os.getcwd(), DIRECTORY, filename)
-    print(filepath)
+
     if not os.path.exists(filepath):
         return jsonify({'error': f'XML File with id {id} does not exist'}), 404
 

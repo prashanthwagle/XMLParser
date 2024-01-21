@@ -18,12 +18,17 @@
 
 # How to run the server
 
+## First things first
+
+Download this repository to a folder. You should have a folder XMLParser in your machine.
+
 ## Install Prerequisites
 
 Install Python 3 and pip
 
 ## After installation of prerequisites
 
+Navigate to the folder XMLParser via terminal
 Run `python3 run_server.py` on UNIX-based systems OR
 Run `python run_server.py` on Windows
 

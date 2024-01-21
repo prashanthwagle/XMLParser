@@ -18,10 +18,23 @@
 
 # How to run the server
 
-Make sure you have python3 installed
+## Install Prerequisites
+
+Install Python 3 and pip
+
+## After installation of prerequisites
+
 Run `python3 run_server.py` on UNIX-based systems OR
 Run `python run_server.py` on Windows
 
 # Error Logging
 
 Errors are logged to the terminal. The errors and warnings are described in xml_parser.py
+
+# Future work
+
+- For now the errors and warnings are logged. Robust exception handling mechanisms should be introduced
+  - For now, due to lack of time, I have focused on catching the errors but not on handling them
+- Logging the data should enable insights and some sort of visualization
+- Standardizing the error logs and connecting it to a database like Elasticache would enable better insights for the future
+- Need to integerate it with some kind of a database so that the document is parsed only once and not on every request
